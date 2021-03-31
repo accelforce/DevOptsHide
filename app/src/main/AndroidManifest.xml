@@ -8,6 +8,18 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true" />
+        android:supportsRtl="true">
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="Shows enabled developer options as disabled per app" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="82" />
+
+    </application>
 
 </manifest>

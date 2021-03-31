@@ -34,4 +34,5 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compileOnly 'de.robv.android.xposed:api:82'
 }
