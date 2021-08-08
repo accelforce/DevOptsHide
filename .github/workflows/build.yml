@@ -101,5 +101,5 @@ jobs:
         with:
           upload_url: ${{ steps.draft.outputs.upload_url }}
           asset_path: ./built-app/${{ env.ARTIFACT_FILE }}
-          asset_name: itc-lms-unofficial-${{ env.CHANGELOG_VERSION }}.apk
+          asset_name: devoptshide-${{ env.CHANGELOG_VERSION }}.apk
           asset_content_type: application/vnd.android.package-archive
