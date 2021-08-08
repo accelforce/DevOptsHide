@@ -22,14 +22,56 @@ class HideDevOpts : IXposedHookLoadPackage {
             ContentResolver::class.java,
             String::class.java,
             Int::class.java,
-            object : XC_MethodHook() {
-                override fun beforeHookedMethod(param: MethodHookParam?) {
-                    if (param == null || param.args[1] !is String || (param.args[1] as String) != Settings.Global.DEVELOPMENT_SETTINGS_ENABLED) {
-                        return
-                    }
+            callback,
+        )
 
-                    param.result = 0
+        findAndHookMethod(
+            Settings.Global::class.java,
+            "getInt",
+            ContentResolver::class.java,
+            String::class.java,
+            Int::class.java,
+            callback,
+        )
+
+        listOf(Settings.Secure::class.java, Settings.Global::class.java).forEach { parent ->
+            findAndHookMethod(
+                parent,
+                "getInt",
+                ContentResolver::class.java,
+                String::class.java,
+                callback,
+            )
+
+            findAndHookMethod(
+                parent,
+                "getInt",
+                ContentResolver::class.java,
+                String::class.java,
+                Int::class.java,
+                callback,
+            )
+        }
+    }
+
+    companion object {
+        private val names = listOf(
+            Settings.Global.ADB_ENABLED,
+            Settings.Global.DEVELOPMENT_SETTINGS_ENABLED,
+        )
+
+        private val callback = object : XC_MethodHook() {
+            override fun beforeHookedMethod(param: MethodHookParam?) {
+                if (
+                    param == null
+                    || param.args[1] !is String
+                    || !names.contains(param.args[1] as String)
+                ) {
+                    return
                 }
-            })
+
+                param.result = 0
+            }
+        }
     }
 }
