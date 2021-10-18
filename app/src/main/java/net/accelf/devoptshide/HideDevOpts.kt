@@ -16,24 +16,6 @@ class HideDevOpts : IXposedHookLoadPackage {
         }
         XposedBridge.log("Found package: ${lpparam.packageName}")
 
-        findAndHookMethod(
-            Settings.Secure::class.java,
-            "getInt",
-            ContentResolver::class.java,
-            String::class.java,
-            Int::class.java,
-            callback,
-        )
-
-        findAndHookMethod(
-            Settings.Global::class.java,
-            "getInt",
-            ContentResolver::class.java,
-            String::class.java,
-            Int::class.java,
-            callback,
-        )
-
         listOf(Settings.Secure::class.java, Settings.Global::class.java).forEach { parent ->
             findAndHookMethod(
                 parent,
