@@ -4,7 +4,6 @@ import android.content.ContentResolver
 import android.provider.Settings
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 
@@ -14,7 +13,6 @@ class HideDevOpts : IXposedHookLoadPackage {
         if (lpparam == null) {
             return
         }
-        XposedBridge.log("Found package: ${lpparam.packageName}")
 
         listOf(Settings.Secure::class.java, Settings.Global::class.java).forEach { parent ->
             findAndHookMethod(
