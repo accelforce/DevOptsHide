@@ -14,6 +14,13 @@ class HideDevOpts : IXposedHookLoadPackage {
             return
         }
 
+        if (
+            lpparam.packageName.startsWith("com.android.")
+            || lpparam.packageName.startsWith("com.google.android.")
+        ) {
+            return
+        }
+
         listOf(Settings.Secure::class.java, Settings.Global::class.java).forEach { parent ->
             findAndHookMethod(
                 parent,
