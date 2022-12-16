@@ -38,6 +38,7 @@ jobs:
           ./gradlew assembleRelease
 
       - uses: r0adkll/sign-android-release@v1
+        if: github.event_name == 'push'
         with:
           releaseDirectory: app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
@@ -46,6 +47,7 @@ jobs:
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
       - uses: actions/upload-artifact@v2
+        if: github.event_name == 'push'
         with:
           name: built-app
           path: ${{ env.SIGNED_RELEASE_FILE }}
