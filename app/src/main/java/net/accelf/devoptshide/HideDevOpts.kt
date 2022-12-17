@@ -9,11 +9,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 
 class HideDevOpts : IXposedHookLoadPackage {
 
-    override fun handleLoadPackage(lpparam: LoadPackageParam?) {
-        if (lpparam == null) {
-            return
-        }
-
+    override fun handleLoadPackage(lpparam: LoadPackageParam) {
         if (
             lpparam.packageName.startsWith("com.android.")
             || lpparam.packageName.startsWith("com.google.android.")
