@@ -4,17 +4,18 @@ import android.content.ContentResolver
 import android.provider.Settings
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 
 class HideDevOpts : IXposedHookLoadPackage {
 
-    override fun handleLoadPackage(lpparam: LoadPackageParam?) {
-        if (lpparam == null) {
+    override fun handleLoadPackage(lpparam: LoadPackageParam) {
+        if (
+            lpparam.packageName.startsWith("com.android.")
+            || lpparam.packageName.startsWith("com.google.android.")
+        ) {
             return
         }
-        XposedBridge.log("Found package: ${lpparam.packageName}")
 
         listOf(Settings.Secure::class.java, Settings.Global::class.java).forEach { parent ->
             findAndHookMethod(
