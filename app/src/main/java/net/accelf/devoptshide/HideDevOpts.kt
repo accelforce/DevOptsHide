@@ -34,6 +34,14 @@ class HideDevOpts : IXposedHookLoadPackage {
                 Int::class.java,
                 callback,
             )
+
+            findAndHookMethod(
+                parent,
+                "getString",
+                ContentResolver::class.java,
+                String::class.java,
+                callback,
+            )
         }
     }
 
@@ -53,7 +61,11 @@ class HideDevOpts : IXposedHookLoadPackage {
                     return
                 }
 
-                param.result = 0
+                param.result = when (param.method.getName()) {
+                    "getInt" -> 0
+                    "getString" -> "0"
+                    else -> error("Illegal method name passed.")
+                }
             }
         }
     }
