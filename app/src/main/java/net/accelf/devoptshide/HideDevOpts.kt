@@ -52,10 +52,9 @@ class HideDevOpts : IXposedHookLoadPackage {
         )
 
         private val callback = object : XC_MethodHook() {
-            override fun beforeHookedMethod(param: MethodHookParam?) {
+            override fun beforeHookedMethod(param: MethodHookParam) {
                 if (
-                    param == null
-                    || param.args[1] !is String
+                    param.args[1] !is String
                     || !names.contains(param.args[1] as String)
                 ) {
                     return
