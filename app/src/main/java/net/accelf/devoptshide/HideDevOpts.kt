@@ -34,6 +34,14 @@ class HideDevOpts : IXposedHookLoadPackage {
                 Int::class.java,
                 callback,
             )
+
+            findAndHookMethod(
+                parent,
+                "getString",
+                ContentResolver::class.java,
+                String::class.java,
+                callback,
+            )
         }
     }
 
@@ -44,16 +52,19 @@ class HideDevOpts : IXposedHookLoadPackage {
         )
 
         private val callback = object : XC_MethodHook() {
-            override fun beforeHookedMethod(param: MethodHookParam?) {
+            override fun beforeHookedMethod(param: MethodHookParam) {
                 if (
-                    param == null
-                    || param.args[1] !is String
+                    param.args[1] !is String
                     || !names.contains(param.args[1] as String)
                 ) {
                     return
                 }
 
-                param.result = 0
+                param.result = when (param.method.getName()) {
+                    "getInt" -> 0
+                    "getString" -> "0"
+                    else -> error("Illegal method name passed.")
+                }
             }
         }
     }
